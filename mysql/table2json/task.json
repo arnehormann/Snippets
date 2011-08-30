@@ -1,0 +1,12 @@
+{
+  "host":     "MYSQL Server   --- REPLACE THIS",
+  "username": "MYSQL Username --- REPLACE THIS",
+  "password": "MYSQL Password --- REPLACE THIS",
+  "database": "MYSQL Schema   --- REPLACE THIS",
+  "order": [
+    /*
+    if you use standard column names in many tables you can enter them here -
+    output will be sorted by all available fields mentioned here.
+    */
+  ]
+}
