@@ -1,9 +1,3 @@
-# product -> unique site
-# product_information -> site by path
-# underlying -> event category
-# underlying_price -> event
-# implied_vola -> announcement (for event)
-
 ### underlying data structures
 
 # Hosted Websites
