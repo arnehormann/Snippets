@@ -54,12 +54,12 @@ SELECT
   si.id, si.sites, si.refs, @refdate as qdate,
   ifnull(ac.entries / @window, @nodata) as event_density, if((ac.announcements / ac.entries) < @min_density, @defect, @ok) as announcements
 FROM (SELECT
-      @refdate:=now(), @window:=50, @history:=731,
-      @nodata:=0.0, @defect:='missing', @ok:='ok',
-      @idx:=0, @mindate:=date_add(@maxdate:=@refdate, interval -@history day),
-      @category:=0, -id as no_id
-    FROM categories LIMIT 1) deoptimize
-  LEFT JOIN (
+      @window:=50, @history:=731,
+      @idx:=0, @category:=0, @nodata:=0.0,
+      @defect:='missing', @ok:='ok',
+      @refdate:=now(), @maxdate:=@refdate, @mindate:=@refdate - interval @history day
+    ) options
+  JOIN (
       SELECT c.id, c.name, count(distinct si.site_id) sites, count(distinct si.id) site_infos
       FROM categories c
         JOIN site_category_references scr ON c.id = scr.category_id
@@ -67,7 +67,7 @@ FROM (SELECT
         JOIN sites s ON scr.site_id = s.id
       WHERE s.expiration > @refdate AND s.is_terminated = 0
       GROUP BY u.id
-    ) si ON si.id != deoptimize.no_id
+    ) si
   LEFT JOIN (
       SELECT
         ce.category_id, count(ce.entry) entries, count(an.content) announcements
